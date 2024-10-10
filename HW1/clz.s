@@ -1,21 +1,27 @@
-# my_clz_test.asm
+# clz_test.asm
 # This program tests the my_clz function, which counts the number of leading zeros in an integer and displays the result.
 
 .data
-clz_output:       .string "my_clz result: " # String to display the my_clz result
+str_1:     .string "The leading zero of "  # Part 1 of the output string
+str_2:     .string " is "                  # Part 2 of the output string
+test_data:        .word 16                 # Test data: the number 16
 
 .text
 .globl main
 
 main:
     # Test my_clz
-    li a0, 16                # Load integer 16 (00000000 00000000 00000000 00010000) into a0
+    lw a0, test_data         # Load integer 16 (00000000 00000000 00000000 00010000) into a0
     jal ra, my_clz           # Call the my_clz function
-    la a1, clz_output        # Load the address of clz_output string into a1
-    jal ra, print_result     # Call the print_result function to display the result
+    mv t1, a0                # Save the my_clz result (leading zero count) to t1
+    lw a0, test_data         # Reload the test data (16) into a0
+
+    # Call print_result function to display full result
+    mv a1, t1                # Pass the my_clz result (leading zero count) as a1
+    jal ra, printResult      # Call the printResult function
 
     # Exit the program
-    li a7, 93                # System call number 93 for exit
+    li a7, 10                # System call number 10 for exit
     ecall
 
 # my_clz function: Counts the number of leading zeros in an integer
@@ -27,12 +33,12 @@ my_clz:
 
 clz_loop:
     li t3, 1                 # Load 1 into t3
-    sll t3, t3, t1           # Shift t3 left by t1 bits to create the mask (1 << t1)
+    sll t3, t3, t1           # Shift t3 left by t1 bits to create the mask
     and t2, a0, t3           # t2 = a0 & (1 << t1)
-    beqz t2, continue_loop   # If t2 == 0, jump to continue_loop
+    beqz t2, check_next_bit   # If t2 == 0, jump to check_next_bit
     j clz_done               # If t2 != 0, jump to clz_done
 
-continue_loop:
+check_next_bit:
     addi t0, t0, 1           # Increment counter t0
     addi t1, t1, -1          # Decrement bit index t1
     bgez t1, clz_loop        # If t1 >= 0, continue looping
@@ -41,23 +47,27 @@ clz_done:
     mv a0, t0                # Move the count t0 to a0 (return value)
     jr ra                    # Return to the caller
 
-# print_result function: Displays the result
-# Inputs:
-#   a1 - Address of the string to display
-#   a0 - Integer value to display
-print_result:
-    mv t0, a0                # Save the result (integer) to temporary register t0
-    mv a0, a1                # Move the string address to a0
-    li a7, 4                 # System call number 4 for printing a string
-    ecall                    # Make the system call to print the string
+# printResult function: Displays the result "The leading zero of <test_data> is <leading zero count>"
+# a0: The original input value (test_data)
+# a1: The leading zero count
+printResult:
+    mv t0, a0                  # Save original input value (test_data) in temporary register t0
+    mv t1, a1                  # Save leading zero count in temporary register t1
 
-    mv a0, t0                # Move the result (integer) back to a0 for printing
-    li a7, 1                 # System call number 1 for printing an integer
-    ecall                    # Make the system call to print the integer
+    la a0, str_1                # Load the address of the first string ("The leading zero of ")
+    li a7, 4                   # System call code for printing a string
+    ecall                      # Print the string "The leading zero of "
 
-    # Print a newline (optional, for better formatting)
-    li a0, 10                # Newline character
-    li a7, 11                # System call number 11 for printing a character
-    ecall                    # Make the system call to print the newline
+    mv a0, t0                  # Move the test_data (16) to a0 for printing
+    li a7, 1                   # System call code for printing an integer
+    ecall                      # Print the test_data (e.g., 16)
 
-    jr ra                    # Return to the caller
+    la a0, str_2              # Load the address of the second string (" is ")
+    li a7, 4                   # System call code for printing a string
+    ecall                      # Print the string " is "
+
+    mv a0, t1                  # Move the leading zero count (result) to a0 for printing
+    li a7, 1                   # System call code for printing an integer
+    ecall                      # Print the leading zero count (e.g., 27)
+
+    ret                        # Return to the caller
