@@ -1,7 +1,6 @@
 .data
-str_1:         .string "The leading zero of "  # Part 1 of the output string
+str_1:         .string "\nThe leading zero of "  # Part 1 of the output string
 str_2:         .string " is "                  # Part 2 of the output string
-newline:       .byte 10                        # Newline character
 test_data_1:   .word 16                        # Test data 1: the number 16
 test_data_2:   .word 128                       # Test data 2: the number 128
 test_data_3:   .word 1024                      # Test data 3: the number 1024
@@ -89,10 +88,5 @@ printResult:
     mv a0, t1                 # Move the leading zero count (result) to a0 for printing
     li a7, 1                  # System call code for printing an integer
     ecall                     # Print the leading zero count
-
-    # Print a newline character
-    la a0, newline            # Load the newline character
-    li a7, 11                 # System call code for printing a character
-    ecall                     # Print the newline character
 
     ret                       # Return to the caller
