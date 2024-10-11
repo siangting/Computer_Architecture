@@ -12,23 +12,23 @@ test_data_4:   .word 0                          # The number 0 (to test undefine
 
 main:
     # Test case 1
-    la a0, test_data_1        # Load address of test_data_1 (16)
-    jal ra, run_clz_test      # Run the clz test
+    la a0, test_data_1
+    jal ra, run_clz_test
 
     # Test case 2
-    la a0, test_data_2        # Load address of test_data_2 (128)
-    jal ra, run_clz_test      # Run the clz test
+    la a0, test_data_2
+    jal ra, run_clz_test
 
     # Test case 3
-    la a0, test_data_3        # Load address of test_data_3 (1024)
-    jal ra, run_clz_test      # Run the clz test
+    la a0, test_data_3
+    jal ra, run_clz_test
 
     # Test case 4 (Undefined behavior for 0)
-    la a0, test_data_4        # Load address of test_data_4 (0)
-    jal ra, run_clz_test      # Run the clz test for 0
+    la a0, test_data_4
+    jal ra, run_clz_test
 
     # Exit the program
-    li a7, 10                 # System call number 10 for exit
+    li a7, 10
     ecall
 
 # run_clz_test function: Executes the my_clz function and prints the result for a given test case
@@ -53,16 +53,16 @@ handle_zero:
     li a7, 4                  # System call code for printing a string
     ecall                     # Print "The leading zero of "
 
-    li a0, 0                  # Print 0
+    li a0, 0
     li a7, 1                  # System call code for printing an integer
     ecall                     # Print 0
 
-    la a0, str_2              # Load " is " string
-    li a7, 4                  # System call code for printing a string
+    la a0, str_2
+    li a7, 4 
     ecall                     # Print " is "
 
-    la a0, str_undefined      # Load "undefined" string
-    li a7, 4                  # System call code for printing a string
+    la a0, str_undefined 
+    li a7, 4 
     ecall                     # Print "undefined"
     j restore_stack           # Jump to restore stack
 
@@ -132,20 +132,20 @@ printResult:
     mv t0, a0                 # Save original input value (test_data) in temporary register t0
     mv t1, a1                 # Save leading zero count in temporary register t1
 
-    la a0, str_1              # Load the address of the first string ("The leading zero of ")
-    li a7, 4                  # System call code for printing a string
+    la a0, str_1
+    li a7, 4
     ecall                     # Print the string "The leading zero of "
 
-    mv a0, t0                 # Move the test_data (16/128/1024) to a0 for printing
-    li a7, 1                  # System call code for printing an integer
+    mv a0, t0
+    li a7, 1
     ecall                     # Print the test_data
 
-    la a0, str_2              # Load the address of the second string (" is ")
-    li a7, 4                  # System call code for printing a string
+    la a0, str_2
+    li a7, 4
     ecall                     # Print the string " is "
 
-    mv a0, t1                 # Move the leading zero count (result) to a0 for printing
-    li a7, 1                  # System call code for printing an integer
+    mv a0, t1
+    li a7, 1
     ecall                     # Print the leading zero count
 
     ret                       # Return to the caller

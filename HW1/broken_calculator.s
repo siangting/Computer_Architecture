@@ -18,22 +18,22 @@ target_3:  .word 1073741824     # 01000000000000000000000000000000
 
 main:
     # Test case 1
-    la a0, start_1          # Load address of start_1
-    la a1, target_1         # Load address of target_1
+    la a0, start_1
+    la a1, target_1
     jal ra, run_test
 
     # Test case 2
-    la a0, start_2          # Load address of start_2
-    la a1, target_2         # Load address of target_2
+    la a0, start_2
+    la a1, target_2
     jal ra, run_test
 
     # Test case 3
-    la a0, start_3          # Load address of start_3
-    la a1, target_3         # Load address of target_3
+    la a0, start_3
+    la a1, target_3
     jal ra, run_test
 
     # Exit the program
-    li a7, 10               # System call code for exit
+    li a7, 10
     ecall
 
 # run_test function: Executes min_operations function and prints the result
@@ -113,35 +113,28 @@ min_loop_end:
 #   t1: target
 #   t2: Minimum operations
 printResult:
-    # Print "\nStartValue = "
-    la a0, str_start
-    li a7, 4                 # System call code for printing a string
-    ecall
-
-    # Print startValue
-    mv a0, t0
-    li a7, 1                 # System call code for printing an integer
-    ecall
-
-    # Print ", Target = "
-    la a0, str_target
+    la a0, str_start      # Print "\nStartValue = "
     li a7, 4
     ecall
 
-    # Print target
-    mv a0, t1
+    mv a0, t0             # Print startValue
     li a7, 1
     ecall
 
-    # Print ", Minimum operations needed: "
-    la a0, str_output
+    la a0, str_target     # Print ", Target = "
     li a7, 4
     ecall
 
-    # Print minimum operations
-    mv a0, t2
+    mv a0, t1             # Print target
     li a7, 1
     ecall
 
-    # No need to print newline separately as it's included in the strings
-    ret
+    la a0, str_output     # Print ", Minimum operations needed: "
+    li a7, 4
+    ecall
+
+    mv a0, t2             # Print minimum operations
+    li a7, 1
+    ecall
+
+    ret                   # No need to print newline separately as it's included in the strings
