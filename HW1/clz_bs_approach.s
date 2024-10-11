@@ -1,11 +1,11 @@
 .data
-str_1:         .string "\nThe leading zero of "  # Part 1 of the output string
-str_2:         .string " is "                   # Part 2 of the output string
-str_undefined: .string "undefined"              # String for undefined behavior (if input is 0)
-test_data_1:   .word 16                         # Test data 1: the number 16
-test_data_2:   .word 128                        # Test data 2: the number 128
-test_data_3:   .word 1024                       # Test data 3: the number 1024
-test_data_4:   .word 0                          # Test data 4: the number 0 (to test undefined behavior)
+str_1:         .string "\nThe leading zero of "
+str_2:         .string " is "
+str_undefined: .string "undefined" 
+test_data_1:   .word 19                         # 00000000000000000000000000010011
+test_data_2:   .word 4096                       # 00000000000000000001000000000000
+test_data_3:   .word 1073741824                 # 01000000000000000000000000000000
+test_data_4:   .word 0                          # The number 0 (to test undefined behavior)
 
 .text
 .globl main
