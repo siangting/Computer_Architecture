@@ -8,10 +8,10 @@ start_1:   .word 2
 target_1:  .word 3
 
 start_2:   .word 5
-target_2:  .word 8
+target_2:  .word 1006
 
 start_3:   .word 3
-target_3:  .word 10
+target_3:  .word 1073741824
 
 .text
 .globl main
