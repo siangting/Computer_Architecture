@@ -5,7 +5,7 @@ str_output:     .string ", Minimum operations needed: "
 
 # Test data
 start_1:   .word 2
-target_1:  .word 3
+target_1:  .word 3              # 00000000000000000000000000000011
 
 start_2:   .word 5
 target_2:  .word 4096           # 00000000000000000001000000000000
